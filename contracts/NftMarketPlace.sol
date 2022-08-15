@@ -181,7 +181,7 @@ contract NftMarketplace is ReentrancyGuard {
 
     function withdrawProceeds() external {
         uint256 proceeds = s_proceeds[msg.sender];
-        if (proceeds >= 0) {
+        if (proceeds <= 0) {
             revert NftMarketplace__NoProceeds();
         }
         s_proceeds[msg.sender] = 0;
@@ -202,6 +202,7 @@ contract NftMarketplace is ReentrancyGuard {
     function getProceeds(address seller) external view returns(uint256) {
         return s_proceeds[seller];
     }
+
 }
 
 // 1. `listitem`: List NFTs on the marketplace ✅
