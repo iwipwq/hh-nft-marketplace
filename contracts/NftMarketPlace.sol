@@ -4,10 +4,10 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-error NftMarketPlace__PriceMustBeAboveZero();
-error NftMarketPlace__NotApprovedForMarketplace();
-error NftMarketPlace__AlreadyListed(address nftAddress, uint256 tokenId);
-error NftMarketPlace__NotOwner();
+error NftMarketplace__PriceMustBeAboveZero();
+error NftMarketplace__NotApprovedForMarketplace();
+error NftMarketplace__AlreadyListed(address nftAddress, uint256 tokenId);
+error NftMarketplace__NotOwner();
 error NftMarketplace__NotListed(address nftAddress, uint256 tokenId);
 error NftMarketplace__PriceNotMet(
     address nftAddress,
@@ -17,7 +17,7 @@ error NftMarketplace__PriceNotMet(
 error NftMarketplace__NoProceeds();
 error NftMarketplace__TransferFailed();
 
-contract NftMarketPlace is ReentrancyGuard {
+contract NftMarketplace is ReentrancyGuard {
     struct Listing {
         uint256 price;
         address seller;
@@ -60,7 +60,7 @@ contract NftMarketPlace is ReentrancyGuard {
     ) {
         Listing memory listing = s_listings[nftAddress][tokenId];
         if (listing.price > 0) {
-            revert NftMarketPlace__AlreadyListed(nftAddress, tokenId);
+            revert NftMarketplace__AlreadyListed(nftAddress, tokenId);
         }
         _;
     }
@@ -73,7 +73,7 @@ contract NftMarketPlace is ReentrancyGuard {
         IERC721 nft = IERC721(nftAddress);
         address owner = nft.ownerOf(tokenId);
         if (spender != owner) {
-            revert NftMarketPlace__NotOwner();
+            revert NftMarketplace__NotOwner();
         }
         _;
     }
@@ -111,13 +111,13 @@ contract NftMarketPlace is ReentrancyGuard {
         isOwner(nftAddress, tokenId, msg.sender)
     {
         if (price <= 0) {
-            revert NftMarketPlace__PriceMustBeAboveZero();
+            revert NftMarketplace__PriceMustBeAboveZero();
         }
         // 1. Send the NFT to the contract. Transfer -> Contract "hold" the NFT.
         // 2. Owners can still hold their NFT, and give the marketplace approval to sell the NFT for them
         IERC721 nft = IERC721(nftAddress);
         if (nft.getApproved(tokenId) != address(this)) {
-            revert NftMarketPlace__NotApprovedForMarketplace();
+            revert NftMarketplace__NotApprovedForMarketplace();
         }
         // array? mapping?
         // mapping
