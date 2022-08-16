@@ -8,12 +8,15 @@ contract BasicNft is ERC721 {
         "ipfs://QmXH46oJifnKUDDemeixJZF9afH2yBPjCW5g8bqVqX6m9w";
     uint256 private s_tokenCounter;
 
+    event FlyMinted(uint256 indexed tokenId);
+
     constructor() ERC721("flyingHead", "FLY") {
         s_tokenCounter = 0;
     }
 
     function mintNft() public returns (uint256) {
         _safeMint(msg.sender, s_tokenCounter);
+        emit FlyMinted(s_tokenCounter);
         s_tokenCounter = s_tokenCounter + 1;
         return s_tokenCounter;
     }
