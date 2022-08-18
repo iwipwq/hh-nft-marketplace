@@ -31,6 +31,9 @@ module.exports = {
       //   url: MAINNET_RPC_URL,
       // }
     },
+    localhost: {
+      chainId: 31337,
+    },
     rinkeby: {
       chainId: 4,
       blockConfirmations: 6,
