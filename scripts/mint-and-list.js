@@ -1,5 +1,5 @@
 const { ethers, network } = require("hardhat");
-const { moveBlock, sleep} = require("../scripts/move-blocks")
+const { moveBlock, sleep} = require("../utils/move-blocks")
 
 
 async function mintAndList() {
