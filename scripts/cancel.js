@@ -10,7 +10,7 @@ async function cancel() {
     await tx.wait(1);
     console.log("NFT 판매 취소됨");
     if(network.config.chainId == "31337") {
-        await moveBlock(2, sleepAmount = 1000);
+        await moveBlock(2, (sleepAmount = 1000));
     }
 }
 
