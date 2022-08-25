@@ -22,9 +22,9 @@ contract BasicNft is ERC721 {
     }
 
     function tokenURI(
-        uint256 /*tokenId*/
+        uint256 tokenId
     ) public view override returns (string memory) {
-        // require(_exist(tokenId))
+        require(_exists(tokenId), unicode"ERC721Metadata: 존재하지 않는 토큰의 URI를 쿼리하고 있습니다.");
         return TOKEN_URI;
     }
 
