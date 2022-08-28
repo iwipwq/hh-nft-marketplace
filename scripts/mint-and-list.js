@@ -9,6 +9,12 @@ async function mintAndList() {
   console.log("발행중...");
   const mintTx = await basicNft.mintNft();
   const mintTxReceipt = await mintTx.wait(1);
+  console.log(mintTxReceipt);
+  const mintGasUsed = mintTxReceipt.gasUsed
+  const mintGasPrice = mintTxReceipt.effectiveGasPrice
+  console.log(mintTxReceipt.gasUsed.toString());
+  console.log(mintTxReceipt.effectiveGasPrice.toString());
+  console.log("민팅가스요금",mintGasPrice.mul(mintGasUsed).toString());
   const tokenId = mintTxReceipt.events[0].args.tokenId;
   console.log("NFT 승인중...");
 
@@ -16,7 +22,13 @@ async function mintAndList() {
   await approvalTx.wait(1);
   console.log("NFT 마켓에 등록중...");
   const tx = await nftMarketplace.listItem(basicNft.address, tokenId, PRICE);
-  await tx.wait(1);
+  const txReceipt = await tx.wait(1);
+  console.log(txReceipt);
+  const gasUsed = txReceipt.gasUsed
+  const gasPrice = txReceipt.effectiveGasPrice
+  console.log(gasUsed.toString())
+  console.log(gasPrice.toString())
+  console.log("리스팅가스요금",(gasUsed.mul(gasPrice)).toString())
   console.log("등록되었습니다.");
 
   if (network.config.chainId == "31337") {
