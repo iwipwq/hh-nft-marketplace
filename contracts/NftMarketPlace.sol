@@ -175,6 +175,9 @@ contract NftMarketplace is ReentrancyGuard {
         isListed(nftAddress, tokenId)
         isOwner(nftAddress, tokenId, msg.sender)
     {
+        if (newPrice <= 0) {
+            revert NftMarketplace__PriceMustBeAboveZero();
+        }
         s_listings[nftAddress][tokenId].price = newPrice;
         emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
     }
@@ -185,7 +188,7 @@ contract NftMarketplace is ReentrancyGuard {
             revert NftMarketplace__NoProceeds();
         }
         s_proceeds[msg.sender] = 0;
-        (bool success, ) = payable(msg.sender).call{value:proceeds}("");
+        (bool success, ) = payable(msg.sender).call{value: proceeds}("");
         if (!success) {
             revert NftMarketplace__TransferFailed();
         }
@@ -195,14 +198,17 @@ contract NftMarketplace is ReentrancyGuard {
     //Getter Functions//
     ////////////////////
 
-    function getListing(address nftAddress, uint256 tokenId) external view returns(Listing memory) {
+    function getListing(address nftAddress, uint256 tokenId)
+        external
+        view
+        returns (Listing memory)
+    {
         return s_listings[nftAddress][tokenId];
     }
 
-    function getProceeds(address seller) external view returns(uint256) {
+    function getProceeds(address seller) external view returns (uint256) {
         return s_proceeds[seller];
     }
-
 }
 
 // 1. `listitem`: List NFTs on the marketplace ✅
